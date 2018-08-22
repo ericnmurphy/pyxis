@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+//key kept in another file to avoid being pushed to Github
 import key from "./kumulosApi";
 
 export default class Search extends Component {
