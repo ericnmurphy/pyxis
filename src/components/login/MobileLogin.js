@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Text } from "informed";
-import { isEmail, isEmpty } from "validator";
+import isEmail from "validator/lib/isEmail";
 import firebase from "firebase/app";
 import "firebase/auth";
 import config from "./firebaseConfig";
@@ -36,21 +36,33 @@ export default class MobileLogin extends Component {
     };
 
     const validatePassword = value => {
-      return isEmpty(String(value)) ? "Please enter a password." : null;
+      return !value ? "Please enter a password." : null;
     };
 
     return (
       <Form onSubmit={this.handleSubmit} getApi={this.setFormApi}>
-        <label htmlFor="email">Email:</label>
-        <Text field="email" id="email" validate={validateEmail} />
-        <label htmlFor="password">Password:</label>
-        <Text
-          type="password"
-          field="password"
-          id="password"
-          validate={validatePassword}
-        />
-        <button type="submit">Log in</button>
+        {({ formApi }) => (
+          <React.Fragment>
+            <label htmlFor="email">Email:</label>
+            <Text
+              field="email"
+              id="email"
+              validateOnBlur
+              validate={validateEmail}
+            />
+            <p>{formApi.getError("email")}</p>
+            <label htmlFor="password">Password:</label>
+            <Text
+              type="password"
+              field="password"
+              id="password"
+              validateOnBlur
+              validate={validatePassword}
+            />
+            <p>{formApi.getError("password")}</p>
+            <button type="submit">Log in</button>
+          </React.Fragment>
+        )}
       </Form>
     );
   }
