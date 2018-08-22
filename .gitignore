@@ -11,6 +11,7 @@
 
 # misc
 firebaseConfig.js
+kumulosApi.js
 .DS_Store
 .env.local
 .env.development.local
