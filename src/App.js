@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import LoginType from "./components/LoginType";
-import Login from "./components/Login";
+import Login from "./components/login/Login";
+import MobileLogin from "./components/login/MobileLogin";
+import SchoolLogin from "./components/login/SchoolLogin";
 import Search from "./components/search/Search";
 import Results from "./components/search/Results";
 import Video from "./components/search/Video";
@@ -10,13 +11,14 @@ import "./App.css";
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Route path="/login-type" component={LoginType} />
-        <Route path="/login" component={Login} />
+      <React.Fragment>
+        <Route exact path="/login" component={Login} />
+        <Route path="/login/mobile" component={MobileLogin} />
+        <Route path="/login/school" component={SchoolLogin} />
         <Route path="/search" component={Search} />
         <Route path="/results" component={Results} />
         <Route path="/video/:id" component={Video} />
-      </div>
+      </React.Fragment>
     );
   }
 }
