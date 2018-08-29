@@ -1,41 +1,39 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import queryString from "query-string";
-import axios from "axios";
 import key from "../kumulosApi";
 
 export default class Results extends Component {
-  state = {
-    videos: []
+  filterVideos = () => {
+    return this.props.videos.filter(video => {
+      return (
+        (this.props.species === "all"
+          ? true
+          : video.speciesId == this.props.species) &&
+        (this.props.surgery === "all"
+          ? true
+          : video.surgeryId == this.props.surgery)
+      );
+    });
   };
 
-  componentDidMount() {
-    axios
-      .get(`https://api.kumulos.com/v1/data/7414_7394_videoMetadatas`, {
-        auth: { username: key }
-      })
-      .then(res => {
-        this.setState({ videos: res.data });
-        console.log(res.data);
-      });
-  }
-
   render() {
-    const query = queryString.parse(this.props.location.search);
-    return this.state.videos
-      .filter(video => {
-        return (
-          (query.species === "all" ? true : video.speciesId == query.species) &&
-          (query.surgery === "all" ? true : video.surgeryId == query.surgery)
-        );
-      })
-      .map((video, i) => (
-        <div key={i}>
-          <h3>
-            <Link to={`/video/${video.videoMetadataID}`}>{video.title}</Link>
-          </h3>
-          <p>{video.desc}</p>
-        </div>
-      ));
+    return (
+      <React.Fragment>
+        {this.filterVideos().length !== 0 ? (
+          this.filterVideos().map((video, i) => (
+            <div key={i}>
+              <h3>
+                <Link to={`/video/${video.videoMetadataID}`}>
+                  {video.title}
+                </Link>
+              </h3>
+              <p>{video.desc}</p>
+            </div>
+          ))
+        ) : (
+          <p>No results match your search.</p>
+        )}
+      </React.Fragment>
+    );
   }
 }

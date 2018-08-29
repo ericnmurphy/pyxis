@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Results from "./Results";
 //key kept in another file to avoid being pushed to Github
 import key from "../kumulosApi";
 
@@ -8,8 +9,9 @@ export default class Search extends Component {
   state = {
     species: [],
     surgeries: [],
+    videos: [],
     search: { species: "all", surgery: "all" },
-    submitted: false
+    status: "search"
   };
 
   getSpecies = () => {
@@ -24,12 +26,25 @@ export default class Search extends Component {
     });
   };
 
-  componentDidMount() {
-    axios.all([this.getSpecies(), this.getSurgeries()]).then(
-      axios.spread((species, surgeries) => {
-        this.setState({ species: species.data, surgeries: surgeries.data });
+  getVideos = () => {
+    return axios.get(
+      `https://api.kumulos.com/v1/data/7414_7394_videoMetadatas`,
+      {
+        auth: { username: key }
+      }
+    );
+  };
 
-        console.log(species.data, surgeries.data);
+  componentDidMount() {
+    axios.all([this.getSpecies(), this.getSurgeries(), this.getVideos()]).then(
+      axios.spread((species, surgeries, videos) => {
+        this.setState({
+          species: species.data,
+          surgeries: surgeries.data,
+          videos: videos.data
+        });
+
+        console.log(species.data, surgeries.data, videos.data);
       })
     );
   }
@@ -43,35 +58,57 @@ export default class Search extends Component {
     });
   };
 
+  renderResults = () => {
+    this.setState({
+      status: "results"
+    });
+  };
+
+  renderSearch = () => {
+    this.setState({
+      status: "search"
+    });
+  };
+
   render() {
     return (
       <div>
-        <select name="species" onChange={this.updateSelect} id="species">
-          <option value="all">ALL</option>
-          {this.state.species.map((species, i) => (
-            <option key={i} value={species.speciesID}>
-              {species.name}
-            </option>
-          ))}
-        </select>
-        <select name="surgery" onChange={this.updateSelect} id="surgery">
-          <option value="all">ALL</option>
-          {this.state.surgeries.map((surgery, i) => (
-            <option key={i} value={surgery.surgeryID}>
-              {surgery.name}
-            </option>
-          ))}
-        </select>
-        <Link
-          to={{
-            pathname: "/results",
-            search: `?species=${this.state.search.species}&surgery=${
-              this.state.search.surgery
-            }`
-          }}
-        >
-          Search
-        </Link>
+        {this.state.status === "search" ? (
+          <React.Fragment>
+            <h3>Species</h3>
+            <select name="species" onChange={this.updateSelect} id="species">
+              <option value="all">ALL</option>
+              {this.state.species.map((species, i) => (
+                <option key={i} value={species.speciesID}>
+                  {species.name}
+                </option>
+              ))}
+            </select>
+            <h3>Surgeries</h3>
+            <select name="surgery" onChange={this.updateSelect} id="surgery">
+              <option value="all">ALL</option>
+              {this.state.surgeries.map((surgery, i) => (
+                <option key={i} value={surgery.surgeryID}>
+                  {surgery.name}
+                </option>
+              ))}
+            </select>
+            <button type="button" onClick={this.renderResults}>
+              Search
+            </button>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Results
+              species={this.state.search.species}
+              surgery={this.state.search.surgery}
+              videos={this.state.videos}
+            />
+            <button type="button" onClick={this.renderSearch}>
+              Back
+            </button>
+          </React.Fragment>
+        )}
       </div>
     );
   }
