@@ -24,6 +24,13 @@ export default class MobileLogin extends Component {
       .catch(function(error) {
         console.log(error);
       });
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("succ");
+      } else {
+        console.log("fail");
+      }
+    });
   }
 
   setFormApi(formApi) {

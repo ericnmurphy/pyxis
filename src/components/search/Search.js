@@ -8,30 +8,30 @@ export default class Search extends Component {
   state = {
     species: [],
     surgeries: [],
-    search: { species: null, surgery: null },
+    search: { species: "all", surgery: "all" },
     submitted: false
   };
 
+  getSpecies = () => {
+    return axios.get(`https://api.kumulos.com/v1/data/7414_7394_species`, {
+      auth: { username: key }
+    });
+  };
+
+  getSurgeries = () => {
+    return axios.get(`https://api.kumulos.com/v1/data/7414_7394_surgeries`, {
+      auth: { username: key }
+    });
+  };
+
   componentDidMount() {
-    axios
-      .get(`https://api.kumulos.com/v1/data/7414_7394_species`, {
-        auth: { username: key }
+    axios.all([this.getSpecies(), this.getSurgeries()]).then(
+      axios.spread((species, surgeries) => {
+        this.setState({ species: species.data, surgeries: surgeries.data });
+
+        console.log(species.data, surgeries.data);
       })
-      .then(res => {
-        this.setState({ species: res.data });
-        console.log(res.data);
-        return axios.get(
-          `https://api.kumulos.com/v1/data/7414_7394_surgeries`,
-          { auth: { username: key } }
-        );
-      })
-      .then(res => {
-        this.setState({ surgeries: res.data });
-        console.log(res.data);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    );
   }
 
   updateSelect = e => {
@@ -47,6 +47,7 @@ export default class Search extends Component {
     return (
       <div>
         <select name="species" onChange={this.updateSelect} id="species">
+          <option value="all">ALL</option>
           {this.state.species.map((species, i) => (
             <option key={i} value={species.speciesID}>
               {species.name}
@@ -54,6 +55,7 @@ export default class Search extends Component {
           ))}
         </select>
         <select name="surgery" onChange={this.updateSelect} id="surgery">
+          <option value="all">ALL</option>
           {this.state.surgeries.map((surgery, i) => (
             <option key={i} value={surgery.surgeryID}>
               {surgery.name}

@@ -25,7 +25,8 @@ export default class Results extends Component {
     return this.state.videos
       .filter(video => {
         return (
-          video.speciesId == query.species && video.surgeryId == query.surgery
+          (query.species === "all" ? true : video.speciesId == query.species) &&
+          (query.surgery === "all" ? true : video.surgeryId == query.surgery)
         );
       })
       .map((video, i) => (
