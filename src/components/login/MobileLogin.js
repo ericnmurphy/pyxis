@@ -3,19 +3,9 @@ import { Form, Text } from "informed";
 import isEmail from "validator/lib/isEmail";
 import firebase from "firebase/app";
 import "firebase/auth";
-import config from "./firebaseConfig";
-
-const auth = firebase.initializeApp(config);
 
 export default class MobileLogin extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.setFormApi = this.setFormApi.bind(this);
-  }
-
-  handleSubmit() {
+  handleSubmit = () => {
     const { email, password } = this.formApi.getState().values;
     console.log(email, password);
     firebase
@@ -24,18 +14,11 @@ export default class MobileLogin extends Component {
       .catch(function(error) {
         console.log(error);
       });
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        console.log("succ");
-      } else {
-        console.log("fail");
-      }
-    });
-  }
+  };
 
-  setFormApi(formApi) {
+  setFormApi = formApi => {
     this.formApi = formApi;
-  }
+  };
 
   render() {
     const validateEmail = value => {
@@ -45,32 +28,37 @@ export default class MobileLogin extends Component {
     const validatePassword = value => {
       return !value ? "Please enter a password." : null;
     };
-
     return (
-      <Form onSubmit={this.handleSubmit} getApi={this.setFormApi}>
-        {({ formApi }) => (
-          <React.Fragment>
-            <label htmlFor="email">Email:</label>
-            <Text
-              field="email"
-              id="email"
-              validateOnBlur
-              validate={validateEmail}
-            />
-            <p>{formApi.getError("email")}</p>
-            <label htmlFor="password">Password:</label>
-            <Text
-              type="password"
-              field="password"
-              id="password"
-              validateOnBlur
-              validate={validatePassword}
-            />
-            <p>{formApi.getError("password")}</p>
-            <button type="submit">Log in</button>
-          </React.Fragment>
+      <React.Fragment>
+        {this.props.user ? (
+          "be"
+        ) : (
+          <Form onSubmit={this.handleSubmit} getApi={this.setFormApi}>
+            {({ formApi }) => (
+              <React.Fragment>
+                <label htmlFor="email">Email:</label>
+                <Text
+                  field="email"
+                  id="email"
+                  validateOnBlur
+                  validate={validateEmail}
+                />
+                <p>{formApi.getError("email")}</p>
+                <label htmlFor="password">Password:</label>
+                <Text
+                  type="password"
+                  field="password"
+                  id="password"
+                  validateOnBlur
+                  validate={validatePassword}
+                />
+                <p>{formApi.getError("password")}</p>
+                <button type="submit">Log in</button>
+              </React.Fragment>
+            )}
+          </Form>
         )}
-      </Form>
+      </React.Fragment>
     );
   }
 }
