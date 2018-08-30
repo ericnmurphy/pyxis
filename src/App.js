@@ -20,9 +20,22 @@ class App extends Component {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ user });
+      } else {
+        const persistUser = localStorage.getItem("userLoggedIn");
+
+        if (persistUser) {
+          this.setState({ user: JSON.parse(persistUser) });
+        } else {
+          this.setState({ user: false });
+        }
       }
     });
   }
+
+  loginUser = user => {
+    this.setState({ user: user });
+    localStorage.setItem("userLoggedIn", JSON.stringify(this.state.user));
+  };
 
   render() {
     return (
@@ -32,7 +45,16 @@ class App extends Component {
           path="/login/mobile"
           render={props => <MobileLogin {...props} user={this.state.user} />}
         />
-        <Route path="/login/school" component={SchoolLogin} />
+        <Route
+          path="/login/school"
+          render={props => (
+            <SchoolLogin
+              {...props}
+              loginUser={this.loginUser}
+              user={this.state.user}
+            />
+          )}
+        />
         <Route path="/search" component={Search} />
         <Route path="/results" component={Results} />
         <Route path="/video/:id" component={Video} />

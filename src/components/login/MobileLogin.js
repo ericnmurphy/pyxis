@@ -5,14 +5,17 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 export default class MobileLogin extends Component {
+  state = { error: null };
+
   handleSubmit = () => {
+    this.setState({ error: null });
     const { email, password } = this.formApi.getState().values;
     console.log(email, password);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .catch(function(error) {
-        console.log(error);
+      .catch(error => {
+        this.setState({ error: "Invalid username or password." });
       });
   };
 
@@ -30,9 +33,9 @@ export default class MobileLogin extends Component {
     };
     return (
       <React.Fragment>
-        {this.props.user ? (
-          "be"
-        ) : (
+        {this.props.user && <p>You are logged in.</p>}
+        {this.props.user === null && <p>Loading...</p>}
+        {this.props.user === false && (
           <Form onSubmit={this.handleSubmit} getApi={this.setFormApi}>
             {({ formApi }) => (
               <React.Fragment>
@@ -53,6 +56,7 @@ export default class MobileLogin extends Component {
                   validate={validatePassword}
                 />
                 <p>{formApi.getError("password")}</p>
+                {this.state.error && <p>{this.state.error}</p>}
                 <button type="submit">Log in</button>
               </React.Fragment>
             )}
