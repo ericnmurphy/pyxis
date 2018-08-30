@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import videojs from "video.js";
 import "videojs-vr";
 import axios from "axios";
@@ -34,17 +35,20 @@ export default class Video extends Component {
 
   render() {
     return (
-      <div data-vjs-player>
-        <video
-          ref={node => (this.videoNode = node)}
-          className="video-js"
-          controls
-          playsInline
-          webkit-playsinline="true"
-          width="100vw"
-          height="100vh"
-        />
-      </div>
+      <React.Fragment>
+        {this.props.user === false && <Redirect to="/login" />}
+        <div data-vjs-player>
+          <video
+            ref={node => (this.videoNode = node)}
+            className="video-js"
+            controls
+            playsInline
+            webkit-playsinline="true"
+            width="100vw"
+            height="100vh"
+          />
+        </div>
+      </React.Fragment>
     );
   }
 }

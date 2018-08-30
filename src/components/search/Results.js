@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import key from "../kumulosApi";
 
 export default class Results extends Component {
   filterVideos = () => {

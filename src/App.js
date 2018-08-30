@@ -11,7 +11,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import config from "./components/login/firebaseConfig";
 
-const auth = firebase.initializeApp(config);
+firebase.initializeApp(config);
 
 class App extends Component {
   state = { user: null };
@@ -55,9 +55,14 @@ class App extends Component {
             />
           )}
         />
-        <Route path="/search" component={Search} />
-        <Route path="/results" component={Results} />
-        <Route path="/video/:id" component={Video} />
+        <Route
+          path="/search"
+          render={props => <Search {...props} user={this.state.user} />}
+        />
+        <Route
+          path="/video/:id"
+          render={props => <Video {...props} user={this.state.user} />}
+        />
       </React.Fragment>
     );
   }

@@ -1,14 +1,56 @@
+@font-face {
+  font-family: "Walkway";
+  src: url(./fonts/WalkwaySemiBold.ttf);
+}
+
 body {
   margin: 0;
-  padding: 0;
+  padding: 1em;
   font-family: sans-serif;
 }
+
+/* general styles */
+
+h3 {
+  font-family: "Walkway", sans-serif;
+  font-size: 1.25em;
+  text-align: center;
+  margin: 0.5em 0;
+}
+
+select {
+  background-color: #eee;
+  border-width: 0;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1em;
+  padding: 1em 1em;
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+button {
+  margin: 0 auto;
+  display: block;
+  font-family: "Walkway", sans-serif;
+  font-size: 1.5em;
+  color: #fff;
+  padding: 0.75rem 5rem;
+  background: #83329b;
+  border: 1px solid #83329b;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.vjs-player {
+  display: none;
+}
+
+/* make video stretch fullscreen */
 
 #root {
   height: 100vh;
 }
-
-/* make video stretch fullscreen */
 
 .video-js {
   width: 100%;
