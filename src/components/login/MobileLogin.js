@@ -5,17 +5,19 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 export default class MobileLogin extends Component {
-  state = { error: null };
+  state = { error: null, processing: false };
 
   handleSubmit = () => {
-    this.setState({ error: null });
+    this.setState({ error: null, processing: true });
     const { email, password } = this.formApi.getState().values;
-    console.log(email, password);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(error => {
-        this.setState({ error: "Invalid username or password." });
+        this.setState({
+          error: "Invalid username or password.",
+          processing: false
+        });
       });
   };
 
@@ -46,7 +48,7 @@ export default class MobileLogin extends Component {
                   validateOnBlur
                   validate={validateEmail}
                 />
-                <p>{formApi.getError("email")}</p>
+                <p className="error">{formApi.getError("email")}</p>
                 <label htmlFor="password">Password:</label>
                 <Text
                   type="password"
@@ -55,9 +57,13 @@ export default class MobileLogin extends Component {
                   validateOnBlur
                   validate={validatePassword}
                 />
-                <p>{formApi.getError("password")}</p>
-                {this.state.error && <p>{this.state.error}</p>}
-                <button type="submit">Log in</button>
+                <p className="error">{formApi.getError("password")}</p>
+                <button disabled={this.state.processing} type="submit">
+                  {this.state.processing ? "Logging in..." : "Log in"}
+                </button>
+                {this.state.error && (
+                  <p className="error">{this.state.error}</p>
+                )}
               </React.Fragment>
             )}
           </Form>

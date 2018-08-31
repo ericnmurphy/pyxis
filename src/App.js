@@ -4,7 +4,6 @@ import Login from "./components/login/Login";
 import MobileLogin from "./components/login/MobileLogin";
 import SchoolLogin from "./components/login/SchoolLogin";
 import Search from "./components/search/Search";
-import Results from "./components/search/Results";
 import Video from "./components/search/Video";
 import "./App.css";
 import firebase from "firebase/app";
@@ -40,7 +39,11 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <Route exact path="/login" component={Login} />
+        <Route
+          exact
+          path="/login"
+          render={props => <Login {...props} user={this.state.user} />}
+        />
         <Route
           path="/login/mobile"
           render={props => <MobileLogin {...props} user={this.state.user} />}

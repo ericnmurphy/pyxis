@@ -17,22 +17,70 @@ export default class Results extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="results-container">
         {this.filterVideos().length !== 0 ? (
           this.filterVideos().map((video, i) => (
-            <div key={i}>
-              <h3>
-                <Link to={`/video/${video.videoMetadataID}`}>
-                  {video.title}
-                </Link>
-              </h3>
-              <p>{video.desc}</p>
-            </div>
+            <Link
+              className="result-link"
+              to={`/video/${video.videoMetadataID}`}
+            >
+              <div className="result" key={i}>
+                <div>
+                  <h3>{video.title}</h3>
+                  <div className="results-first-span">
+                    <span>
+                      {
+                        this.props.speciesList.find(species => {
+                          return species.speciesID == video.speciesId;
+                        }).name
+                      }
+                    </span>
+                  </div>
+                  <div>
+                    <span>
+                      {
+                        this.props.schoolsList.find(school => {
+                          return school.schoolID == video.schoolId;
+                        }).schoolName
+                      }
+                    </span>
+                  </div>
+                  <div className="notes">
+                    <p>NOTES:</p>
+                    <p>{video.desc}</p>
+                  </div>
+                </div>
+                <div>
+                  <div className="type">
+                    <span>{video.type}</span>
+                  </div>
+                  <div>
+                    <span>
+                      {
+                        this.props.subjectsList.find(subject => {
+                          return subject.subjectID == video.subjectId;
+                        }).subjectType
+                      }
+                    </span>
+                  </div>
+                  <div className="number">
+                    <span>{video.videoNumber}</span>
+                  </div>
+                  <div>
+                    <span className="class">
+                      Class:
+                      <br />
+                      {video.classNumber}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
           ))
         ) : (
           <p>No results match your search.</p>
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }

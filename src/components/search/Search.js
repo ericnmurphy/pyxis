@@ -10,6 +10,8 @@ export default class Search extends Component {
     species: [],
     surgeries: [],
     videos: [],
+    schools: [],
+    subjects: [],
     search: { species: "all", surgery: "all" },
     status: "search"
   };
@@ -35,18 +37,38 @@ export default class Search extends Component {
     );
   };
 
-  componentDidMount() {
-    axios.all([this.getSpecies(), this.getSurgeries(), this.getVideos()]).then(
-      axios.spread((species, surgeries, videos) => {
-        this.setState({
-          species: species.data,
-          surgeries: surgeries.data,
-          videos: videos.data
-        });
+  getSchools = () => {
+    return axios.get(`https://api.kumulos.com/v1/data/7414_7394_schools`, {
+      auth: { username: key }
+    });
+  };
 
-        console.log(species.data, surgeries.data, videos.data);
-      })
-    );
+  getSubjects = () => {
+    return axios.get(`https://api.kumulos.com/v1/data/7414_7394_subjects`, {
+      auth: { username: key }
+    });
+  };
+
+  componentDidMount() {
+    axios
+      .all([
+        this.getSpecies(),
+        this.getSurgeries(),
+        this.getVideos(),
+        this.getSchools(),
+        this.getSubjects()
+      ])
+      .then(
+        axios.spread((species, surgeries, videos, schools, subjects) => {
+          this.setState({
+            species: species.data,
+            surgeries: surgeries.data,
+            videos: videos.data,
+            schools: schools.data,
+            subjects: subjects.data
+          });
+        })
+      );
   }
 
   updateSelect = e => {
@@ -114,9 +136,12 @@ export default class Search extends Component {
             ) : (
               <React.Fragment>
                 <Results
+                  speciesList={this.state.species}
                   species={this.state.search.species}
                   surgery={this.state.search.surgery}
                   videos={this.state.videos}
+                  schoolsList={this.state.schools}
+                  subjectsList={this.state.subjects}
                 />
                 <button type="button" onClick={this.renderSearch}>
                   Back
