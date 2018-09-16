@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Results from "./Results";
-//key kept in another file to avoid being pushed to Github
-import key from "../kumulosApi";
+
+const key = process.env.KUMULOS_API || process.env.REACT_APP_KUMULOS_API;
 
 export default class Search extends Component {
   state = {
@@ -141,7 +141,7 @@ export default class Search extends Component {
                 </button>
               </React.Fragment>
             ) : (
-              <React.Fragment>
+              <div className="results-container">
                 <Results
                   speciesList={this.state.species}
                   species={this.state.search.species}
@@ -153,7 +153,7 @@ export default class Search extends Component {
                 <button type="button" onClick={this.renderSearch}>
                   Back
                 </button>
-              </React.Fragment>
+              </div>
             )}
           </React.Fragment>
         )}

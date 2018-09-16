@@ -17,14 +17,15 @@ export default class Results extends Component {
 
   render() {
     return (
-      <div className="results-container">
+      <React.Fragment>
         {this.filterVideos().length !== 0 ? (
           this.filterVideos().map((video, i) => (
             <Link
               className="result-link"
               to={`/video/${video.videoMetadataID}`}
+              key={i}
             >
-              <div className="result" key={i}>
+              <div className="result">
                 <div>
                   <h3>{video.title}</h3>
                   <div className="results-first-span">
@@ -80,7 +81,7 @@ export default class Results extends Component {
         ) : (
           <p>No results match your search.</p>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

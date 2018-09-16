@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Form, Text, Select, Option } from "informed";
 import isEmail from "validator/lib/isEmail";
 import axios from "axios";
-import key from "../kumulosApi";
+
+const key = process.env.KUMULOS_API || process.env.REACT_APP_KUMULOS_API;
 
 export default class SchoolLogin extends Component {
   state = { error: null, processing: false, schools: [] };

@@ -3,7 +3,8 @@ import { Redirect } from "react-router-dom";
 import videojs from "video.js";
 import "videojs-vr";
 import axios from "axios";
-import key from "../kumulosApi";
+
+const key = process.env.KUMULOS_API || process.env.REACT_APP_KUMULOS_API;
 
 export default class Video extends Component {
   state = {
