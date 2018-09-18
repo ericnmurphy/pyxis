@@ -1,0 +1,6 @@
+{
+  "env": {
+    "FIREBASE_API": "@firebase-api",
+    "KUMULOS_API": "@kumulos-api"
+  }
+}

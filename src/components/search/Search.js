@@ -96,14 +96,7 @@ export default class Search extends Component {
     return (
       <React.Fragment>
         {this.props.user === null && <p>Loading...</p>}
-        {this.props.user === false && (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { error: "You need to login to see this page." }
-            }}
-          />
-        )}
+        {this.props.user === false && <Redirect to="/login" />}
         {this.props.user && (
           <React.Fragment>
             {this.state.status === "search" ? (
