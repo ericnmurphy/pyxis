@@ -68,6 +68,30 @@ button {
   display: none;
 }
 
+/* login */
+
+.login {
+  display: flex;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.login > .login-box {
+  margin: 1em;
+  padding: 1em;
+  flex: 1;
+  background: #83329b;
+  color: #fff;
+  text-decoration: none;
+}
+
+.login > .login-box > h3 {
+  color: #fff;
+  font-family: "Walkway", sans-serif;
+  font-size: 2.5em;
+  text-transform: uppercase;
+}
+
 /* results */
 
 .results-container {
