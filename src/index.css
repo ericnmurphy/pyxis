@@ -177,6 +177,12 @@ button {
   height: 100%;
 }
 
+.video-js canvas {
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .video-js .vjs-big-play-button {
   margin: auto;
   top: 0;
