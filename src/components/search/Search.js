@@ -3,7 +3,11 @@ import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Results from "./Results";
 
-const key = process.env.KUMULOS_API || process.env.REACT_APP_KUMULOS_API;
+const apiKey = process.env.KUMULOS_API || process.env.REACT_APP_KUMULOS_API;
+const apiFunctions =
+  process.env.KUMULOS_FUNCTIONS || process.env.REACT_APP_KUMULOS_FUNCTIONS;
+const apiSecret =
+  process.env.KUMULOS_SECRET || process.env.REACT_APP_KUMULOS_SECRET;
 
 export default class Search extends Component {
   state = {
@@ -18,34 +22,36 @@ export default class Search extends Component {
 
   getSpecies = () => {
     return axios.get(`https://api.kumulos.com/v1/data/7414_7394_species`, {
-      auth: { username: key }
+      auth: { username: apiKey }
     });
   };
 
   getSurgeries = () => {
     return axios.get(`https://api.kumulos.com/v1/data/7414_7394_surgeries`, {
-      auth: { username: key }
+      auth: { username: apiKey }
     });
   };
 
   getVideos = () => {
-    return axios.get(
-      `https://api.kumulos.com/v1/data/7414_7394_videoMetadatas`,
-      {
-        auth: { username: key }
+    return axios({
+      method: "post",
+      url: `https://api.kumulos.com/b2.2/${apiFunctions}/getAllVideos.json`,
+      auth: {
+        username: apiFunctions,
+        password: apiSecret
       }
-    );
+    });
   };
 
   getSchools = () => {
     return axios.get(`https://api.kumulos.com/v1/data/7414_7394_schools`, {
-      auth: { username: key }
+      auth: { username: apiKey }
     });
   };
 
   getSubjects = () => {
     return axios.get(`https://api.kumulos.com/v1/data/7414_7394_subjects`, {
-      auth: { username: key }
+      auth: { username: apiKey }
     });
   };
 
@@ -60,6 +66,7 @@ export default class Search extends Component {
       ])
       .then(
         axios.spread((species, surgeries, videos, schools, subjects) => {
+          console.log(videos.data);
           this.setState({
             species: species.data,
             surgeries: surgeries.data,
