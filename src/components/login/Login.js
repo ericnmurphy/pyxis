@@ -5,7 +5,15 @@ export default class Login extends Component {
   render() {
     return (
       <React.Fragment>
-        {this.props.user && <p>You are logged in.</p>}
+        {this.props.user &&
+          (this.props.user === "unsubscribed" ? (
+            <React.Fragment>
+              <p>You're not currently subscribed.</p>
+              <p>You can manage your subscription through the app.</p>
+            </React.Fragment>
+          ) : (
+            <p>You are logged in.</p>
+          ))}
         {this.props.user === null && <p>Loading...</p>}
         {this.props.user === false && (
           <React.Fragment>

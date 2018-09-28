@@ -9,6 +9,13 @@ import "./App.css";
 import firebase from "firebase/app";
 import "firebase/auth";
 import config from "./components/login/firebaseConfig";
+import axios from "axios";
+import qs from "qs";
+
+const apiFunctions =
+  process.env.KUMULOS_FUNCTIONS || process.env.REACT_APP_KUMULOS_FUNCTIONS;
+const apiSecret =
+  process.env.KUMULOS_SECRET || process.env.REACT_APP_KUMULOS_SECRET;
 
 firebase.initializeApp(config);
 
@@ -18,7 +25,24 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({ user });
+        axios({
+          method: "POST",
+          auth: {
+            username: apiFunctions,
+            password: apiSecret
+          },
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          data: qs.stringify({ "params[uId]": user.uid }),
+          url: `https://api.kumulos.com/b2.2/${apiFunctions}/getUserWithUID.json`
+        }).then(res => {
+          if (res.data.payload[0].subscription) {
+            this.setState({ user });
+          } else {
+            this.setState({ user: "unsubscribed" });
+          }
+        });
       } else {
         const persistUser = localStorage.getItem("userLoggedIn");
 

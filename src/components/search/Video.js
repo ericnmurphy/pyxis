@@ -37,7 +37,10 @@ export default class Video extends Component {
   render() {
     return (
       <React.Fragment>
-        {this.props.user === false && <Redirect to="/login" />}
+        {(this.props.user === false || this.props.user === "unsubscribed") && (
+          <Redirect to="/login" />
+        )}
+
         <div data-vjs-player>
           <video
             ref={node => (this.videoNode = node)}
