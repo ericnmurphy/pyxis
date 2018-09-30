@@ -96,6 +96,7 @@ button {
 
 .results-container {
   background: #dac1e1;
+  min-height: 100vh;
   padding: 1em;
 }
 

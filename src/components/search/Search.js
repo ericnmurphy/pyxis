@@ -3,6 +3,8 @@ import { Redirect } from "react-router-dom";
 import axios from "axios";
 import qs from "qs";
 import Results from "./Results";
+import { createHashHistory } from "history";
+const history = createHashHistory();
 
 const apiKey = process.env.KUMULOS_API || process.env.REACT_APP_KUMULOS_API;
 const apiFunctions =
@@ -20,6 +22,15 @@ export default class Search extends Component {
     search: { species: "all", surgery: "all" },
     status: "search"
   };
+
+  componentDidUpdate() {
+    window.onpopstate = e => {
+      if ((this.state.status = "results")) {
+        this.setState({ status: "search" });
+        this.props.history.push("/search");
+      }
+    };
+  }
 
   getSpecies = () => {
     return axios.get(`https://api.kumulos.com/v1/data/7414_7394_species`, {
@@ -114,6 +125,7 @@ export default class Search extends Component {
   };
 
   renderResults = () => {
+    this.props.history.push("/search/results");
     this.setState({
       status: "results"
     });
@@ -123,6 +135,7 @@ export default class Search extends Component {
     this.setState({
       status: "search"
     });
+    this.props.history.push("/search");
   };
 
   render() {
@@ -181,6 +194,7 @@ export default class Search extends Component {
                     videos={this.state.videos}
                     schoolsList={this.state.schools}
                     subjectsList={this.state.subjects}
+                    backToSearch={this.backToSearch}
                   />
                   <button type="button" onClick={this.renderSearch}>
                     Back
