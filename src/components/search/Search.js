@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
 import qs from "qs";
 import Results from "./Results";
@@ -32,6 +31,10 @@ export default class Search extends Component {
     };
   }
 
+  componentWillUnmount = () => {
+    this.isCanceled = true;
+  };
+
   getSpecies = () => {
     return axios.get(`https://api.kumulos.com/v1/data/7414_7394_species`, {
       auth: { username: apiKey }
@@ -60,7 +63,7 @@ export default class Search extends Component {
             auth: { username: apiKey }
           })
           .then(res => {
-            this.setState({ surgeries: res.data });
+            !this.isCanceled && this.setState({ surgeries: res.data });
           })
       : axios({
           method: "POST",
@@ -74,7 +77,7 @@ export default class Search extends Component {
           data: qs.stringify({ "params[speciesId]": id }),
           url: `https://api.kumulos.com/b2.2/${apiFunctions}/getSurgiesBySpecies.json`
         }).then(res => {
-          this.setState({ surgeries: res.data.payload });
+          !this.isCanceled && this.setState({ surgeries: res.data.payload });
         });
   };
 
@@ -101,13 +104,14 @@ export default class Search extends Component {
       ])
       .then(
         axios.spread((species, surgeries, videos, schools, subjects) => {
-          this.setState({
-            species: species.data,
-            surgeries: surgeries.data,
-            videos: videos.data,
-            schools: schools.data,
-            subjects: subjects.data
-          });
+          !this.isCanceled &&
+            this.setState({
+              species: species.data,
+              surgeries: surgeries.data,
+              videos: videos.data,
+              schools: schools.data,
+              subjects: subjects.data
+            });
         })
       );
   }
@@ -116,40 +120,37 @@ export default class Search extends Component {
     if (e.target.name === "species") {
       this.filterSurgeries(e.target.value);
     }
-    this.setState({
-      search: {
-        ...this.state.search,
-        [e.target.name]: e.target.value
-      }
-    });
+    !this.isCanceled &&
+      this.setState({
+        search: {
+          ...this.state.search,
+          [e.target.name]: e.target.value
+        }
+      });
   };
 
   renderResults = () => {
     this.props.history.push("/search/results");
-    this.setState({
-      status: "results"
-    });
+    !this.isCanceled &&
+      this.setState({
+        status: "results"
+      });
   };
 
   renderSearch = () => {
-    this.setState({
-      status: "search"
-    });
+    !this.isCanceled &&
+      this.setState({
+        status: "search"
+      });
     this.props.history.push("/search");
   };
 
   render() {
     return (
       <React.Fragment>
-        {this.props.user === null && <p>Loading...</p>}
-        {this.props.user === false && <Redirect to="/login" />}
+        {this.props.checkUserStatus()}
         {this.props.user &&
-          (this.props.user === "unsubscribed" ? (
-            <React.Fragment>
-              <p>You're not currently subscribed.</p>
-              <p>You can manage your subscription through the app.</p>
-            </React.Fragment>
-          ) : (
+          this.props.user !== "unsubscribed" && (
             <React.Fragment>
               {this.state.status === "search" ? (
                 <React.Fragment>
@@ -202,7 +203,7 @@ export default class Search extends Component {
                 </div>
               )}
             </React.Fragment>
-          ))}
+          )}
       </React.Fragment>
     );
   }

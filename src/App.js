@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import Login from "./components/login/Login";
 import MobileLogin from "./components/login/MobileLogin";
 import SchoolLogin from "./components/login/SchoolLogin";
@@ -60,6 +60,17 @@ class App extends Component {
     localStorage.setItem("userLoggedIn", JSON.stringify(this.state.user));
   };
 
+  checkUserStatus = () => {
+    switch (this.state.user) {
+      case null:
+        return <p>Loading...</p>;
+      case false:
+        return <Redirect to="/login" />;
+      case "unsubscribed":
+        return <Redirect to="/login" />;
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -84,11 +95,23 @@ class App extends Component {
         />
         <Route
           path="/search"
-          render={props => <Search {...props} user={this.state.user} />}
+          render={props => (
+            <Search
+              {...props}
+              checkUserStatus={this.checkUserStatus}
+              user={this.state.user}
+            />
+          )}
         />
         <Route
           path="/video/:id"
-          render={props => <Video {...props} user={this.state.user} />}
+          render={props => (
+            <Video
+              {...props}
+              checkUserStatus={this.checkUserStatus}
+              user={this.state.user}
+            />
+          )}
         />
       </React.Fragment>
     );

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import videojs from "video.js";
 import "videojs-vr";
 import axios from "axios";
@@ -12,9 +11,7 @@ export default class Video extends Component {
   };
 
   componentDidMount() {
-    this.player = videojs(this.videoNode, this.props, function onPlayerReady() {
-      console.log("onPlayerReady", this);
-    });
+    this.player = videojs(this.videoNode, this.props);
 
     this.player.vr({ projection: "360" });
     axios
@@ -26,7 +23,6 @@ export default class Video extends Component {
           index => index.videoMetadataID == this.props.match.params.id
         );
         this.setState({ video: res.data[index] });
-        console.log(res.data);
         this.player.src({
           type: "application/x-mpegURL",
           src: this.state.video.videoURL
@@ -37,9 +33,7 @@ export default class Video extends Component {
   render() {
     return (
       <React.Fragment>
-        {(this.props.user === false || this.props.user === "unsubscribed") && (
-          <Redirect to="/login" />
-        )}
+        {this.props.checkUserStatus()}
 
         <div data-vjs-player>
           <video
