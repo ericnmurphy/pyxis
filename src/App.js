@@ -37,7 +37,7 @@ class App extends Component {
           data: qs.stringify({ "params[uId]": user.uid }),
           url: `https://api.kumulos.com/b2.2/${apiFunctions}/getUserWithUID.json`
         }).then(res => {
-          if (res.data.payload[0].subscription) {
+          if (res.data.payload[0].subscribed) {
             this.setState({ user });
           } else {
             this.setState({ user: "unsubscribed" });
