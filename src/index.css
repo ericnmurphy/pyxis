@@ -64,6 +64,14 @@ button {
   cursor: pointer;
 }
 
+button.vjs-button {
+  padding: 1px 6px;
+}
+
+.vjs-menu-item-text {
+  pointer-events: none;
+}
+
 .vjs-player {
   display: none;
 }

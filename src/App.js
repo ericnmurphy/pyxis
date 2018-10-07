@@ -20,7 +20,7 @@ const apiSecret =
 firebase.initializeApp(config);
 
 class App extends Component {
-  state = { user: null };
+  state = { user: null, quality: "auto" };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
@@ -52,12 +52,22 @@ class App extends Component {
           this.setState({ user: false });
         }
       }
+
+      const persistQuality = localStorage.getItem("quality");
+      if (persistQuality) {
+        this.setState({ quality: JSON.parse(persistQuality) });
+      }
     });
   }
 
   loginUser = user => {
-    this.setState({ user: user });
+    this.setState({ user });
     localStorage.setItem("userLoggedIn", JSON.stringify(this.state.user));
+  };
+
+  changeQuality = quality => {
+    this.setState({ quality });
+    localStorage.setItem("quality", JSON.stringify(this.state.quality));
   };
 
   checkUserStatus = () => {
@@ -109,6 +119,8 @@ class App extends Component {
             <Video
               {...props}
               checkUserStatus={this.checkUserStatus}
+              changeQuality={this.changeQuality}
+              quality={this.state.quality}
               user={this.state.user}
             />
           )}
