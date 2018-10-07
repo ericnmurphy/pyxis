@@ -8367,7 +8367,7 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-video.js@^5.6.0, video.js@^5.8.5:
+video.js@^5.8.5:
   version "5.20.5"
   resolved "https://registry.yarnpkg.com/video.js/-/video.js-5.20.5.tgz#445cdae204bce459782d86a31b25a32afd6d8eff"
   integrity sha1-RFza4gS85Fl4LYajGyWjKv1tjv8=
@@ -8396,14 +8396,6 @@ video.js@^5.6.0, video.js@^5.8.5:
     videojs-vtt.js "0.14.1"
     xhr "2.4.0"
 
-videojs-contrib-quality-levels@^2.0.9:
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/videojs-contrib-quality-levels/-/videojs-contrib-quality-levels-2.0.9.tgz#b5d533d5092a6fc7d29eae1b43e4597d89bd527b"
-  integrity sha512-HJeaJJQdSufi9Y5T7jlyyhkeq+mWPCog86q6ypoTi66boBMMJTo2abiOSHS9KaOGAJjH72gfvrjVY5FRdjlxYA==
-  dependencies:
-    global "^4.3.2"
-    video.js "^6 || ^7"
-
 videojs-font@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/videojs-font/-/videojs-font-2.0.0.tgz#af7461ef9d4b95e0334bffb78b2f2ff0364a9034"
@@ -8428,13 +8420,6 @@ videojs-ie8@1.1.2:
   integrity sha1-oj09hgitcZK2nGB3/E64SJmNNdk=
   dependencies:
     es5-shim "^4.5.1"
-
-videojs-settings-menu@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/videojs-settings-menu/-/videojs-settings-menu-0.0.2.tgz#f17f4efebfbbef235f48a58ac03dd0ca1e35514e"
-  integrity sha1-8X9O/r+77yNfSKWKwD3Qyh41UU4=
-  dependencies:
-    video.js "^5.6.0"
 
 videojs-swf@5.4.1:
   version "5.4.1"
