@@ -3,7 +3,7 @@ import axios from "axios";
 import qs from "qs";
 import Results from "./Results";
 import { createHashHistory } from "history";
-const history = createHashHistory();
+createHashHistory();
 
 const apiKey = process.env.KUMULOS_API || process.env.REACT_APP_KUMULOS_API;
 const apiFunctions =
@@ -24,7 +24,7 @@ export default class Search extends Component {
 
   componentDidUpdate() {
     window.onpopstate = e => {
-      if ((this.state.status = "results")) {
+      if (this.state.status === "results") {
         this.setState({ status: "search" });
         this.props.history.push("/search");
       }

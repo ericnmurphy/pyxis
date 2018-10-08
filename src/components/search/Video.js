@@ -20,7 +20,9 @@ export default class Video extends Component {
       })
       .then(res => {
         const index = res.data.findIndex(
-          index => index.videoMetadataID == this.props.match.params.id
+          index =>
+            parseInt(index.videoMetadataID, 10) ===
+            parseInt(this.props.match.params.id, 10)
         );
         this.setState({ video: res.data[index] });
 

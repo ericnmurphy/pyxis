@@ -7,10 +7,11 @@ export default class Results extends Component {
       return (
         (this.props.species === "all"
           ? true
-          : video.speciesId == this.props.species) &&
+          : parseInt(video.speciesId, 10) ===
+            parseInt(this.props.species, 10)) &&
         (this.props.surgery === "all"
           ? true
-          : video.surgeryId == this.props.surgery)
+          : parseInt(video.surgeryId, 10) === parseInt(this.props.surgery, 10))
       );
     });
   };
@@ -32,7 +33,10 @@ export default class Results extends Component {
                     <span>
                       {
                         this.props.speciesList.find(species => {
-                          return species.speciesID == video.speciesId;
+                          return (
+                            parseInt(species.speciesID, 10) ===
+                            parseInt(video.speciesId, 10)
+                          );
                         }).name
                       }
                     </span>
@@ -41,7 +45,10 @@ export default class Results extends Component {
                     <span>
                       {
                         this.props.schoolsList.find(school => {
-                          return school.schoolID == video.schoolId;
+                          return (
+                            parseInt(school.schoolID, 10) ===
+                            parseInt(video.schoolId, 10)
+                          );
                         }).schoolName
                       }
                     </span>
@@ -59,7 +66,10 @@ export default class Results extends Component {
                     <span>
                       {
                         this.props.subjectsList.find(subject => {
-                          return subject.subjectID == video.subjectId;
+                          return (
+                            parseInt(subject.subjectID, 10) ===
+                            parseInt(video.subjectId, 10)
+                          );
                         }).subjectType
                       }
                     </span>

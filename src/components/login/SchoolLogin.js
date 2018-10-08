@@ -32,7 +32,7 @@ export default class SchoolLogin extends Component {
           return (
             email === user.email &&
             password === user.password &&
-            school == user.schoolId
+            parseInt(school, 10) === parseInt(user.schoolId, 10)
           );
         });
         authUser.length

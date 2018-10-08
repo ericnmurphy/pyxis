@@ -78,6 +78,8 @@ class App extends Component {
         return <Redirect to="/login" />;
       case "unsubscribed":
         return <Redirect to="/login" />;
+      default:
+        return;
     }
   };
 
