@@ -43,13 +43,6 @@ export default class Video extends Component {
             )
           },
           {
-            label: "720p",
-            src: this.state.video.videoURL.replace(
-              /(\.[\w\d_-]+)$/i,
-              "720p.m3u8"
-            )
-          },
-          {
             label: "auto",
             src: this.state.video.videoURL
           }
