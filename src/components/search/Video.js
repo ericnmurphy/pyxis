@@ -13,7 +13,6 @@ export default class Video extends Component {
   componentDidMount() {
     this.player = videojs(this.videoNode, this.props);
 
-    this.player.vr({ projection: "360" });
     axios
       .get(`https://api.kumulos.com/v1/data/7414_7394_videoMetadatas`, {
         auth: { username: key }
@@ -99,6 +98,7 @@ export default class Video extends Component {
           }
         });
       });
+    this.player.vr({ projection: "AUTO" });
   }
 
   render() {
