@@ -98,7 +98,7 @@ export default class Video extends Component {
           }
         });
       });
-    this.player.vr({ projection: "AUTO" });
+    this.player.vr({ projection: "360" });
   }
 
   render() {
